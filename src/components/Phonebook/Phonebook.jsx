@@ -2,9 +2,9 @@ import '../../shared/styles/styles.scss';
 
 import ContactsForm from './ContactForm/ContactForm';
 import Filter from './Filter/Filter';
-import ContactsList from './ContactList/ContactList';
 
-import { Suspense } from 'react';
+
+import { lazy, Suspense } from 'react';
 import { FidgetSpinner } from 'react-loader-spinner';
 
 import {
@@ -14,18 +14,16 @@ import {
 } from 'redux/phonebook/phonebook-operations';
 
 import {
-  getAllContacts,
-  getFilteredContacts,
+    getFilteredContacts,
 } from 'redux/phonebook/phonebook-selectors';
 
 import styles from './phonebook.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 import { setFilter } from 'redux/filter/filter-slice';
-
-import { useEffect } from 'react';
+const ContactsList = lazy(() => import('./ContactList/ContactList'));
 const Phonebook = () => {
-  const contacts = useSelector(getAllContacts);
   const filteredContacts = useSelector(getFilteredContacts);
 
   const dispatch = useDispatch();
