@@ -3,8 +3,14 @@ import PropTypes from 'prop-types';
 import ContactsListItem from './ContactsListItem/ContactsListItem';
 
 import styles from './contactList.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFilteredContacts } from 'redux/phonebook/phonebook-selectors';
+import { getFilter } from 'redux/filter/filter-selectors';
 
 const ContactsList = ({ contacts, deleteContact }) => {
+  const filteredContacts = useSelector(getFilteredContacts);
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
   // const contactsSorted = contacts;
   // console.log(contacts)
   // .sort(function (a, b) {

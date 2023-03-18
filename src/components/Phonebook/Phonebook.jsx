@@ -4,6 +4,15 @@ import ContactsForm from './ContactForm/ContactForm';
 import Filter from './Filter/Filter';
 import ContactsList from './ContactList/ContactList';
 
+import { Suspense } from 'react';
+import { FidgetSpinner } from 'react-loader-spinner';
+
+import {
+  fetchAddContact,
+  fetchAllContacts,
+  fetchDeleteContact,
+} from 'redux/phonebook/phonebook-operations';
+
 import {
   getAllContacts,
   getFilteredContacts,
@@ -12,46 +21,25 @@ import {
 import styles from './phonebook.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addContact, deleteContact } from 'redux/phonebook/phonebook-slice';
 import { setFilter } from 'redux/filter/filter-slice';
 
+import { useEffect } from 'react';
 const Phonebook = () => {
-  const filteredContacts = useSelector(getFilteredContacts);
   const contacts = useSelector(getAllContacts);
-  // const filter = useSelector(getFilter);
+  const filteredContacts = useSelector(getFilteredContacts);
+
   const dispatch = useDispatch();
-  // const [contacts, setContacts] = useState(() => {
-  //   const contacts = JSON.parse(localStorage.getItem('my-contacts'));
-  //   return contacts ? contacts : [];
-  // });
-  // const [filter, setFilter] = useState('');
 
-  // useEffect(() => {
-  //   localStorage.setItem('my-contacts', JSON.stringify(contacts));
-  // }, [contacts]);
+  useEffect(() => {
+    dispatch(fetchAllContacts());
+  }, [dispatch]);
 
-  const isDulicate = (name, number) => {
-    const normalizedName = name.toLowerCase();
-    const normalizedNumber = number.toLowerCase();
-    const result = contacts.find(({ name, number }) => {
-      return (
-        name.toLowerCase() === normalizedName ||
-        number.toLowerCase() === normalizedNumber
-      );
-    });
-    return Boolean(result);
-  };
-
-  const handleaddContact = ({ name, number }) => {
-    if (isDulicate(name, number)) {
-      alert(`${name}: ${number} is in phonebook`);
-      return false;
-    }
-    dispatch(addContact({ name, number }));
+  const handleAddContact = ({ name, number }) => {
+    dispatch(fetchAddContact({ name, number }));
   };
 
   const handleDeleteContact = id => {
-    dispatch(deleteContact(id));
+    dispatch(fetchDeleteContact(id));
   };
 
   const handleFilter = ({ target }) => {
@@ -61,20 +49,35 @@ const Phonebook = () => {
   const isContacts = Boolean(filteredContacts.length);
 
   return (
-    <div className={styles.container}>
-      <h1>Phonebook</h1>
-
-      <ContactsForm onSubmit={handleaddContact} />
-      <h2>Contacts</h2>
-      <Filter handleChange={handleFilter} />
-      {isContacts && (
-        <ContactsList
-          contacts={filteredContacts}
-          deleteContact={handleDeleteContact}
+    <Suspense
+      fallback={
+        <FidgetSpinner
+          visible={true}
+          height="200"
+          width="200"
+          ariaLabel="dna-loading"
+          wrapperStyle={{}}
+          wrapperClass="dna-wrapper"
+          ballColors={['#ff0000', '#00ff00', '#0000ff']}
+          backgroundColor="#F4442E"
         />
-      )}
-      {!isContacts && <p>Not yet added contacts</p>}
-    </div>
+      }
+    >
+      <div className={styles.container}>
+        <h1>Phonebook</h1>
+
+        <ContactsForm onSubmit={handleAddContact} />
+        <h2>Contacts</h2>
+        <Filter handleChange={handleFilter} />
+        {isContacts && (
+          <ContactsList
+            contacts={filteredContacts}
+            deleteContact={handleDeleteContact}
+          />
+        )}
+        {!isContacts && <p>Not yet added contacts</p>}
+      </div>
+    </Suspense>
   );
 };
 
