@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkgoit_react_hw_07_phonebook=self.webpackChunkgoit_react_hw_07_phonebook||[]).push([[960],{960:function(e,n,a){a.r(n);var t=a(434),c=a(653),o=a(184);n.default=function(e){var n=e.value,a=(0,t.I0)();return(0,o.jsxs)("div",{children:[(0,o.jsx)("label",{children:"Finde contacts by name"}),(0,o.jsx)("input",{name:"filter",value:n,onChange:function(e){var n=e.target;a((0,c.T)(n.value))},placeholder:"Find contacts"})]})}}}]);
+//# sourceMappingURL=960.9cb102ce.chunk.js.map
