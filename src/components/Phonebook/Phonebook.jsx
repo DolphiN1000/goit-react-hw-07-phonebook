@@ -27,7 +27,7 @@ const Phonebook = () => {
   return (
     <Suspense
       fallback={
-           <FidgetSpinner
+        <FidgetSpinner
           visible={true}
           height="200"
           width="200"
@@ -38,8 +38,8 @@ const Phonebook = () => {
           backgroundColor="#F4442E"
         />
       }
-      >
-         <div className={styles.container}>
+    >
+      <div className={styles.container}>
         <h1>Phonebook</h1>
 
         <ContactsForm />
