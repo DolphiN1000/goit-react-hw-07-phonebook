@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
 import initialState from './initialState';
 
 import styles from './contactForm.module.scss';
+import { useDispatch } from 'react-redux';
 
-const ContactsForm = ({ onSubmit }) => {
+import { fetchAddContact } from 'redux/phonebook/phonebook-operations';
+const ContactsForm = () => {
   const [contact, setContact] = useState({ ...initialState });
+
+  const dispatch = useDispatch();
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -15,9 +18,12 @@ const ContactsForm = ({ onSubmit }) => {
     });
   };
 
+  const handleAddContact = ({ name, number }) => {
+    dispatch(fetchAddContact({ name, number }));
+  };
   const handleSubmit = event => {
     event.preventDefault();
-    onSubmit({ ...contact });
+    handleAddContact({ ...contact });
     setContact({ ...initialState });
   };
 
@@ -55,7 +61,3 @@ const ContactsForm = ({ onSubmit }) => {
 };
 
 export default ContactsForm;
-
-ContactsForm.protoType = {
-  onSubmit: PropTypes.func.isRequired,
-};

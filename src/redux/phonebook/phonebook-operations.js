@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import * as api from '../../shared/styles/services/phonebookAPI';
 
+
 export const fetchAllContacts = createAsyncThunk(
   'contacts/fetchAll',
   async (_, thunkAPI) => {
@@ -47,6 +48,7 @@ export const fetchDeleteContact = createAsyncThunk(
   'contacts/deleteContact',
   async (id, { rejectWithValue }) => {
     try {
+      
       await api.deleteContact(id);
       return id;
     } catch ({ response }) {
